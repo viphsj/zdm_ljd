@@ -2,8 +2,8 @@
  * @Description：什么值得买--通用领京豆
  * @Author: gxcuit 
  * @Date: 2019-12-31 11:22:45 
- * @Last Modified by: gxcuit
- * @Last Modified time: 2020-01-09 14:18:10
+ * @Last Modified by: viphsj
+ * @Last Modified time: 2020-07-12 14:18:10
  * 
  * @使用说明：
  * 1.最好首先关闭“什么值得买”和“京东”app
@@ -24,18 +24,23 @@ function follow() {
         back();
         return;
     }
-    follow.click();
-    sleep(random(2000, 2500));
+    //增加判断，按钮是否是“关注有礼”，防止无意义的关注。
+    if (follow.bounds() == "Rect(886, 218 - 1059, 286)"){
+        follow.click();
+        sleep(random(2000, 2500));
 
-    //var confirm = text('确认').findOne(1000);
-    var confirm = textMatches("/(确认)+|(收下)+|(关注)+/").findOne(3000);
-    if (confirm) {
-        if (!confirm.click()) {
-            confirm.parent().click();
+        //var confirm = text('确认').findOne(1000);
+        var confirm = textMatches("/(立即领取)+|(猛戳领京豆)+|(领取优惠)+|(关注本店领取)+|(先收先得)+|(好礼接住)+|(朕收下了)+|(确认)+|(收下)+|(卖萌求收下)+|(关注)+|(收下好礼)+/").findOne(3000);
+        if (confirm) {
+            if (!confirm.click()) {
+                confirm.parent().click();
+            }
+            toastLog("存在''---领取成功！");
+        } else {
+            toastLog('暂无京豆---领取失败！');
         }
-        toastLog("存在''---领取成功！");
     } else {
-        toastLog('暂无京豆---领取失败！');
+        toastLog("不存在'关注有礼！'");
     }
     sleep(random(1000, 2000));
     back();
